@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Tutoring - StemMed</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .booking-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem 20px;
+        }
+        .step-indicator {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+        .step-indicator::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background-color: var(--border-color);
+            z-index: 0;
+        }
+        .step {
+            flex: 1;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+        .step-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--bg-secondary);
+            border: 2px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 0.5rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            transition: var(--transition);
+        }
+        .step.active .step-circle {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            color: white;
+        }
+        .step.completed .step-circle {
+            background-color: var(--secondary-color);
+            border-color: var(--secondary-color);
+            color: white;
+        }
+        .step-title {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+        .step.active .step-title {
+            color: var(--primary-color);
+        }
+        .booking-step {
+            display: none;
+            animation: fadeInUp 0.4s ease-out;
+        }
+        .booking-step.active {
+            display: block;
+        }
+        .option-card {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow-sm);
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-bottom: 1.5rem;
+        }
+        .option-card:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+        }
+        .option-card.selected {
+            border-color: var(--primary-color);
+            background-color: rgba(44, 95, 125, 0.05);
+        }
+        .option-card h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+        .option-card p {
+            color: var(--text-secondary);
+            margin: 0;
+        }
+        .booking-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 3rem;
+            gap: 1rem;
+        }
+        .tutor-card {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow-sm);
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        .tutor-card:hover,
+        .tutor-card.selected {
+            border-color: var(--primary-color);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+        }
+        .tutor-card.selected {
+            background-color: rgba(44, 95, 125, 0.05);
+        }
+        .tutor-name {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+        .tutor-qualifications {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 0.5rem;
+        }
+        .time-slot {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            background-color: white;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            margin: 0.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+        .time-slot:hover,
+        .time-slot.selected {
+            border-color: var(--primary-color);
+            background-color: var(--primary-color);
+            color: white;
+        }
+        .summary-card {
+            background-color: var(--bg-secondary);
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+        }
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .summary-row:last-child {
+            border-bottom: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="logo-section">
+                <div class="logo">StemMed</div>
+            </div>
+            <ul class="nav-menu" id="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="admissions-tests.html" class="nav-link">Admissions Tests</a></li>
+                <li><a href="interviews.html" class="nav-link">Interviews</a></li>
+                <li><a href="gcses.html" class="nav-link">GCSEs</a></li>
+                <li><a href="how-to-revise.html" class="nav-link">How to Revise</a></li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Booking Page -->
+    <section class="hero" style="min-height: 20vh; margin-top: 70px;">
+        <div class="hero-content">
+            <div class="logo-large">StemMed</div>
+            <h1 class="hero-title">Book 1-to-1 Tutoring</h1>
+        </div>
+    </section>
+
+    <section class="booking" style="padding: 3rem 0;">
+        <div class="booking-container">
+            <!-- Step Indicator -->
+            <div class="step-indicator">
+                <div class="step active" id="step-1-indicator">
+                    <div class="step-circle">1</div>
+                    <div class="step-title">Service Type</div>
+                </div>
+                <div class="step" id="step-2-indicator">
+                    <div class="step-circle">2</div>
+                    <div class="step-title">Select Service</div>
+                </div>
+                <div class="step" id="step-3-indicator">
+                    <div class="step-circle">3</div>
+                    <div class="step-title">Choose Tutor</div>
+                </div>
+                <div class="step" id="step-4-indicator">
+                    <div class="step-circle">4</div>
+                    <div class="step-title">Select Time</div>
+                </div>
+                <div class="step" id="step-5-indicator">
+                    <div class="step-circle">5</div>
+                    <div class="step-title">Payment</div>
+                </div>
+            </div>
+
+            <!-- Step 1: Service Type -->
+            <div class="booking-step active" id="step-1">
+                <h2 style="font-size: 2rem; font-weight: 700; color: var(--text-primary); margin-bottom: 2rem; text-align: center;">What would you like to book?</h2>
+                <div class="option-card" data-service-type="admissions-tests">
+                    <h3>Admissions Tests</h3>
+                    <p>UCAT, LNAT, TMUA, MAT, ESAT preparation</p>
+                </div>
+                <div class="option-card" data-service-type="interviews">
+                    <h3>Interview Preparation</h3>
+                    <p>Medicine or Oxbridge interview coaching</p>
+                </div>
+                <div class="option-card" data-service-type="gcse">
+                    <h3>GCSE Tutoring</h3>
+                    <p>1-to-1 GCSE subject tutoring</p>
+                </div>
+            </div>
+
+            <!-- Step 2: Specific Service -->
+            <div class="booking-step" id="step-2">
+                <h2 style="font-size: 2rem; font-weight: 700; color: var(--text-primary); margin-bottom: 2rem; text-align: center;" id="step-2-title">Select Your Service</h2>
+                <div id="step-2-options"></div>
+            </div>
+
+            <!-- Step 3: Tutor Selection -->
+            <div class="booking-step" id="step-3">
+                <h2 style="font-size: 2rem; font-weight: 700; color: var(--text-primary); margin-bottom: 2rem; text-align: center;">Choose Your Tutor</h2>
+                <div class="tutor-card" data-tutor="tutor1">
+                    <div class="tutor-name">Dr. Sarah Mitchell</div>
+                    <div class="tutor-qualifications">Medical School Admissions Expert • 10+ years experience</div>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem;">Specialises in UCAT, Medicine Interviews, and Oxbridge preparation</p>
+                </div>
+                <div class="tutor-card" data-tutor="tutor2">
+                    <div class="tutor-name">Dr. James Chen</div>
+                    <div class="tutor-qualifications">Oxbridge Graduate • Mathematics & Sciences Specialist</div>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem;">Expert in MAT, TMUA, ESAT, and Oxbridge interviews</p>
+                </div>
+                <div class="tutor-card" data-tutor="tutor3">
+                    <div class="tutor-name">Ms. Emily Watson</div>
+                    <div class="tutor-qualifications">Law Admissions Specialist • LNAT Expert</div>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem;">Specialises in LNAT, Law applications, and interview preparation</p>
+                </div>
+            </div>
+
+            <!-- Step 4: Time Selection -->
+            <div class="booking-step" id="step-4">
+                <h2 style="font-size: 2rem; font-weight: 700; color: var(--text-primary); margin-bottom: 2rem; text-align: center;">Select Your Preferred Time</h2>
+                <div style="text-align: center;">
+                    <h3 style="color: var(--text-secondary); margin-bottom: 1.5rem;">Available Time Slots (All times GMT)</h3>
+                    <div class="time-slot" data-time="Mon 10:00-11:00">Mon 10:00-11:00</div>
+                    <div class="time-slot" data-time="Mon 14:00-15:00">Mon 14:00-15:00</div>
+                    <div class="time-slot" data-time="Tue 10:00-11:00">Tue 10:00-11:00</div>
+                    <div class="time-slot" data-time="Tue 16:00-17:00">Tue 16:00-17:00</div>
+                    <div class="time-slot" data-time="Wed 11:00-12:00">Wed 11:00-12:00</div>
+                    <div class="time-slot" data-time="Wed 15:00-16:00">Wed 15:00-16:00</div>
+                    <div class="time-slot" data-time="Thu 10:00-11:00">Thu 10:00-11:00</div>
+                    <div class="time-slot" data-time="Thu 14:00-15:00">Thu 14:00-15:00</div>
+                    <div class="time-slot" data-time="Fri 10:00-11:00">Fri 10:00-11:00</div>
+                    <div class="time-slot" data-time="Fri 13:00-14:00">Fri 13:00-14:00</div>
+                    <div class="time-slot" data-time="Sat 10:00-11:00">Sat 10:00-11:00</div>
+                    <div class="time-slot" data-time="Sat 14:00-15:00">Sat 14:00-15:00</div>
+                </div>
+            </div>
+
+            <!-- Step 5: Payment -->
+            <div class="booking-step" id="step-5">
+                <h2 style="font-size: 2rem; font-weight: 700; color: var(--text-primary); margin-bottom: 2rem; text-align: center;">Review & Payment</h2>
+                <div class="summary-card">
+                    <div class="summary-row">
+                        <span>Service Type:</span>
+                        <span id="summary-service-type">-</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Selected Service:</span>
+                        <span id="summary-service">-</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Tutor:</span>
+                        <span id="summary-tutor">-</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Time Slot:</span>
+                        <span id="summary-time">-</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Price:</span>
+                        <span id="summary-price">£75.00</span>
+                    </div>
+                </div>
+                <div style="text-align: center; margin-top: 2rem;">
+                    <a href="payment.html" class="btn btn-primary" style="font-size: 1.2rem; padding: 1.25rem 3rem;">Proceed to Payment</a>
+                </div>
+            </div>
+
+            <!-- Navigation Buttons -->
+            <div class="booking-navigation">
+                <button class="btn btn-outline" id="prev-btn" style="display: none;">← Previous</button>
+                <button class="btn btn-primary" id="next-btn">Next →</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>StemMed</h3>
+                    <p>Expert medical school and Oxbridge preparation</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Services</h4>
+                    <ul>
+                        <li><a href="admissions-tests.html">Admissions Tests</a></li>
+                        <li><a href="interviews.html">Interviews</a></li>
+                        <li><a href="gcses.html">GCSEs</a></li>
+                        <li><a href="how-to-revise.html">Revision Guides</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <p>Email: info@stemmed.co.uk</p>
+                    <p>UK-based tutoring services</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 StemMed. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // Booking flow logic
+        let currentStep = 1;
+        let bookingData = {
+            serviceType: null,
+            service: null,
+            tutor: null,
+            time: null
+        };
+
+        const serviceOptions = {
+            'admissions-tests': [
+                { name: 'UCAT', id: 'ucat' },
+                { name: 'LNAT', id: 'lnat' },
+                { name: 'TMUA', id: 'tmua' },
+                { name: 'MAT', id: 'mat' },
+                { name: 'ESAT', id: 'esat' }
+            ],
+            'interviews': [
+                { name: 'Medicine Interview', id: 'medicine-interview' },
+                { name: 'Oxbridge Interview', id: 'oxbridge-interview' }
+            ],
+            'gcse': [
+                { name: 'Mathematics', id: 'gcse-maths' },
+                { name: 'English Language', id: 'gcse-english-lang' },
+                { name: 'English Literature', id: 'gcse-english-lit' },
+                { name: 'Biology', id: 'gcse-biology' },
+                { name: 'Chemistry', id: 'gcse-chemistry' },
+                { name: 'Physics', id: 'gcse-physics' },
+                { name: 'Further Mathematics', id: 'gcse-fm' },
+                { name: 'Additional Mathematics', id: 'gcse-addmaths' },
+                { name: 'History', id: 'gcse-history' },
+                { name: 'Geography', id: 'gcse-geography' },
+                { name: 'Computer Science', id: 'gcse-compsci' }
+            ]
+        };
+
+        // Step 1: Service Type Selection
+        document.querySelectorAll('[data-service-type]').forEach(card => {
+            card.addEventListener('click', function() {
+                document.querySelectorAll('[data-service-type]').forEach(c => c.classList.remove('selected'));
+                this.classList.add('selected');
+                bookingData.serviceType = this.dataset.serviceType;
+            });
+        });
+
+        // Step 2: Specific Service Selection
+        function renderStep2Options() {
+            const options = serviceOptions[bookingData.serviceType] || [];
+            const container = document.getElementById('step-2-options');
+            container.innerHTML = '';
+            
+            options.forEach(option => {
+                const card = document.createElement('div');
+                card.className = 'option-card';
+                card.dataset.service = option.id;
+                card.innerHTML = `<h3>${option.name}</h3><p>1-to-1 tutoring session</p>`;
+                card.addEventListener('click', function() {
+                    document.querySelectorAll('#step-2-options .option-card').forEach(c => c.classList.remove('selected'));
+                    this.classList.add('selected');
+                    bookingData.service = option.name;
+                });
+                container.appendChild(card);
+            });
+        }
+
+        // Step 3: Tutor Selection
+        document.querySelectorAll('.tutor-card').forEach(card => {
+            card.addEventListener('click', function() {
+                document.querySelectorAll('.tutor-card').forEach(c => c.classList.remove('selected'));
+                this.classList.add('selected');
+                bookingData.tutor = this.querySelector('.tutor-name').textContent;
+            });
+        });
+
+        // Step 4: Time Selection
+        document.querySelectorAll('.time-slot').forEach(slot => {
+            slot.addEventListener('click', function() {
+                document.querySelectorAll('.time-slot').forEach(s => s.classList.remove('selected'));
+                this.classList.add('selected');
+                bookingData.time = this.dataset.time;
+            });
+        });
+
+        // Navigation
+        document.getElementById('next-btn').addEventListener('click', function() {
+            if (currentStep === 1 && !bookingData.serviceType) {
+                alert('Please select a service type');
+                return;
+            }
+            if (currentStep === 2 && !bookingData.service) {
+                alert('Please select a specific service');
+                return;
+            }
+            if (currentStep === 3 && !bookingData.tutor) {
+                alert('Please select a tutor');
+                return;
+            }
+            if (currentStep === 4 && !bookingData.time) {
+                alert('Please select a time slot');
+                return;
+            }
+
+            if (currentStep === 1) {
+                renderStep2Options();
+            }
+
+            if (currentStep === 5) {
+                updateSummary();
+            }
+
+            if (currentStep < 5) {
+                currentStep++;
+                updateStepDisplay();
+            }
+        });
+
+        document.getElementById('prev-btn').addEventListener('click', function() {
+            if (currentStep > 1) {
+                currentStep--;
+                updateStepDisplay();
+            }
+        });
+
+        function updateStepDisplay() {
+            // Update step indicators
+            for (let i = 1; i <= 5; i++) {
+                const indicator = document.getElementById(`step-${i}-indicator`);
+                const step = document.getElementById(`step-${i}`);
+                
+                if (i < currentStep) {
+                    indicator.classList.remove('active');
+                    indicator.classList.add('completed');
+                    step.classList.remove('active');
+                } else if (i === currentStep) {
+                    indicator.classList.remove('completed');
+                    indicator.classList.add('active');
+                    step.classList.add('active');
+                } else {
+                    indicator.classList.remove('active', 'completed');
+                    step.classList.remove('active');
+                }
+            }
+
+            // Update navigation buttons
+            document.getElementById('prev-btn').style.display = currentStep > 1 ? 'block' : 'none';
+            document.getElementById('next-btn').textContent = currentStep === 5 ? 'Complete Booking' : 'Next →';
+        }
+
+        function updateSummary() {
+            document.getElementById('summary-service-type').textContent = bookingData.serviceType || '-';
+            document.getElementById('summary-service').textContent = bookingData.service || '-';
+            document.getElementById('summary-tutor').textContent = bookingData.tutor || '-';
+            document.getElementById('summary-time').textContent = bookingData.time || '-';
+        }
+
+        // Check URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const serviceParam = urlParams.get('service');
+        if (serviceParam) {
+            // Auto-select based on URL parameter
+            if (['ucat', 'lnat', 'tmua', 'mat', 'esat'].includes(serviceParam)) {
+                bookingData.serviceType = 'admissions-tests';
+                currentStep = 2;
+            } else if (['medicine-interview', 'oxbridge-interview'].includes(serviceParam)) {
+                bookingData.serviceType = 'interviews';
+                currentStep = 2;
+            } else if (serviceParam.startsWith('gcse')) {
+                bookingData.serviceType = 'gcse';
+                currentStep = 2;
+            }
+            updateStepDisplay();
+            if (currentStep === 2) {
+                renderStep2Options();
+                setTimeout(() => {
+                    const serviceCard = document.querySelector(`[data-service="${serviceParam}"]`);
+                    if (serviceCard) {
+                        serviceCard.click();
+                        bookingData.service = serviceCard.querySelector('h3').textContent;
+                    }
+                }, 100);
+            }
+        }
+    </script>
+</body>
+</html>

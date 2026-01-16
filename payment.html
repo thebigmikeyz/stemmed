@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment - StemMed</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .payment-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem 20px;
+        }
+        .payment-form {
+            background-color: white;
+            padding: 3rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow-md);
+        }
+        .product-info {
+            background-color: var(--bg-secondary);
+            padding: 2rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="logo-section">
+                <div class="logo">StemMed</div>
+            </div>
+            <ul class="nav-menu" id="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li class="nav-item-dropdown">
+                    <a href="admissions-tests.html" class="nav-link">Admissions Tests <span style="font-size: 0.8em;">▼</span></a>
+                    <div class="dropdown-menu">
+                        <a href="admissions-tests.html#ucat" class="dropdown-item">UCAT</a>
+                        <a href="admissions-tests.html#lnat" class="dropdown-item">LNAT</a>
+                        <a href="admissions-tests.html#tmua" class="dropdown-item">TMUA</a>
+                        <a href="admissions-tests.html#mat" class="dropdown-item">MAT</a>
+                        <a href="admissions-tests.html#esat" class="dropdown-item">ESAT</a>
+                    </div>
+                </li>
+                <li><a href="interviews.html" class="nav-link">Interviews</a></li>
+                <li><a href="gcses.html" class="nav-link">GCSEs</a></li>
+                <li><a href="how-to-revise.html" class="nav-link">How to Revise</a></li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Payment Page -->
+    <section class="hero" style="min-height: 20vh; margin-top: 70px;">
+        <div class="hero-content">
+            <div class="logo-large">StemMed</div>
+            <h1 class="hero-title">Complete Your Purchase</h1>
+        </div>
+    </section>
+
+    <section class="payment" style="padding: 3rem 0;">
+        <div class="payment-container">
+            <div class="payment-form">
+                <div class="product-info" id="product-info">
+                    <h2 style="font-size: 1.5rem; font-weight: 600; color: var(--primary-color); margin-bottom: 1rem;">Product</h2>
+                    <p style="color: var(--text-secondary); font-size: 1.1rem;" id="product-name">Preparation Guide</p>
+                    <p style="font-size: 1.5rem; font-weight: 700; color: var(--primary-color); margin-top: 1rem;" id="product-price">£29.99</p>
+                </div>
+
+                <h2 style="font-size: 2rem; font-weight: 700; color: var(--text-primary); margin-bottom: 2rem; text-align: center;">Payment Details</h2>
+                
+                <form style="max-width: 600px; margin: 0 auto;">
+                    <div style="margin-bottom: 1.5rem;">
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-primary);">Email Address</label>
+                        <input type="email" required style="width: 100%; padding: 0.75rem; border: 2px solid var(--border-color); border-radius: 8px; font-size: 1rem;">
+                    </div>
+                    
+                    <div style="margin-bottom: 1.5rem;">
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-primary);">Card Number</label>
+                        <input type="text" placeholder="1234 5678 9012 3456" required style="width: 100%; padding: 0.75rem; border: 2px solid var(--border-color); border-radius: 8px; font-size: 1rem;">
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+                        <div>
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-primary);">Expiry Date</label>
+                            <input type="text" placeholder="MM/YY" required style="width: 100%; padding: 0.75rem; border: 2px solid var(--border-color); border-radius: 8px; font-size: 1rem;">
+                        </div>
+                        <div>
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-primary);">CVV</label>
+                            <input type="text" placeholder="123" required style="width: 100%; padding: 0.75rem; border: 2px solid var(--border-color); border-radius: 8px; font-size: 1rem;">
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary" style="width: 100%; font-size: 1.1rem; padding: 1.25rem;">Complete Purchase</button>
+                </form>
+
+                <p style="text-align: center; margin-top: 2rem; color: var(--text-secondary); font-size: 0.9rem;">
+                    Secure payment powered by Stripe. Your payment information is encrypted and secure.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>StemMed</h3>
+                    <p>Expert medical school and Oxbridge preparation</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Services</h4>
+                    <ul>
+                        <li><a href="admissions-tests.html">Admissions Tests</a></li>
+                        <li><a href="interviews.html">Interviews</a></li>
+                        <li><a href="gcses.html">GCSEs</a></li>
+                        <li><a href="how-to-revise.html">Revision Guides</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <p>Email: info@stemmed.co.uk</p>
+                    <p>UK-based tutoring services</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 StemMed. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // Get product from URL parameter
+        const urlParams = new URLSearchParams(window.location.search);
+        const product = urlParams.get('product');
+        
+        const products = {
+            'ucat-prep-guide': { name: 'UCAT Full Preparation Guide', price: '£29.99' },
+            'lnat-prep-guide': { name: 'LNAT Full Preparation Guide', price: '£29.99' },
+            'tmua-prep-guide': { name: 'TMUA Full Preparation Guide', price: '£29.99' },
+            'mat-prep-guide': { name: 'MAT Full Preparation Guide', price: '£29.99' },
+            'esat-prep-guide': { name: 'ESAT Full Preparation Guide', price: '£29.99' },
+            'medicine-interview-guide': { name: 'Medicine Interview Preparation Guide', price: '£39.99' },
+            'oxbridge-interview-guide': { name: 'Oxbridge Interview Preparation Guide', price: '£39.99' },
+            'oxbridge-guide': { name: 'Generic Oxbridge Guide', price: '£39.99' },
+            'gcse-revision-guide': { name: 'GCSE How to Revise Guide', price: '£19.99' }
+        };
+
+        if (product && products[product]) {
+            document.getElementById('product-name').textContent = products[product].name;
+            document.getElementById('product-price').textContent = products[product].price;
+        }
+    </script>
+</body>
+</html>
